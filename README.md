@@ -1,1 +1,2 @@
 # OpenSourcesForAITrying
+test git
