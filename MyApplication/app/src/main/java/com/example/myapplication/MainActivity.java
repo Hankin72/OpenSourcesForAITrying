@@ -37,6 +37,7 @@ import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
 import com.google.protobuf.InvalidProtocolBufferException;
 
+import java.util.List;
 import java.util.Locale;
 
 /** Main activity of MediaPipe example apps. */
@@ -139,6 +140,18 @@ public class MainActivity extends AppCompatActivity {
         (packet) -> {
           byte[] landmarksRaw = PacketGetter.getProtoBytes(packet);
           try {
+//            List<NormalizedLandmarkList> multiHandLandmarks =
+//                    HandLandmark.getNormalizedLandmarkListVector(landmarksRaw);
+//            if (multiHandLandmarks.size() > 0) {
+//                for (NormalizedLandmarkList landmarks : multiHandLandmarks) {
+//                  // 处理每只手的关键点数据
+//                  Log.d(TAG, "Handlandmark label: " + landmarks.getLabel());
+//                  Log.d(TAG, "[TS:" + packet.getTimestamp() + "] #Landmarks for hand: " + landmarks.getLandmarkCount());
+//                  Log.d(TAG, getLandmarksDebugString(landmarks));
+//                }
+//            }
+
+
             NormalizedLandmarkList landmarks = NormalizedLandmarkList.parseFrom(landmarksRaw);
             if (landmarks == null) {
               Log.d(TAG, "[TS:" + packet.getTimestamp() + "] No hand landmarks.");
