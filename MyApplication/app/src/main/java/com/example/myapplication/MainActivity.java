@@ -23,6 +23,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
 import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmarkList;
 import com.google.mediapipe.components.CameraHelper;
@@ -35,9 +37,12 @@ import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
 import com.google.protobuf.InvalidProtocolBufferException;
 
+import java.util.Locale;
+
 /** Main activity of MediaPipe example apps. */
 public class MainActivity extends AppCompatActivity {
-  private static final String TAG = "MainActivity";
+  private static final String TAG = Stuff.getTAG(MainActivity.class);
+  private static final String FILE = Stuff.FILE;
 
   private static final String BINARY_GRAPH_NAME = "handtrackinggpu.binarypb";
   private static final String INPUT_VIDEO_STREAM_NAME = "input_video";
@@ -75,10 +80,33 @@ public class MainActivity extends AppCompatActivity {
   // Handles camera access via the {@link CameraX} Jetpack support library.
   private CameraXPreviewHelper cameraHelper;
 
+  private TextView fpsView;
+  private long frameCount = 0;
+  private long startTime = System.currentTimeMillis();
+
+  private void updateFps() {
+    frameCount++;
+    long currentTime = System.currentTimeMillis();
+    long elapsedTime = currentTime - startTime;
+    if (elapsedTime > 1000) { // 每秒更新一次帧率
+      final double fps = frameCount * 1000 / (double) elapsedTime;
+      fpsView.post(new Runnable() {
+        @Override
+        public void run() {
+          fpsView.setText(String.format(Locale.US, "FPS: %.2f", fps));
+          Log.d(TAG, FILE + "<updateFps> run: " + String.format(Locale.US, "FPS: %.2f", fps));
+        }
+      });
+      frameCount = 0;
+      startTime = currentTime;
+    }
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+//    fpsView = findViewById(R.id.fps_view);
 
     previewDisplayView = new SurfaceView(this);
     setupPreviewDisplayView();
@@ -102,9 +130,7 @@ public class MainActivity extends AppCompatActivity {
         (packet) -> {
           Boolean handPresence = PacketGetter.getBool(packet);
           if (!handPresence) {
-            Log.d(
-                TAG,
-                "[TS:" + packet.getTimestamp() + "] Hand presence is false, no hands detected.");
+            Log.d(TAG, "[TS:" + packet.getTimestamp() + "] Hand presence is false, no hands detected.");
           }
         });
 
@@ -119,12 +145,7 @@ public class MainActivity extends AppCompatActivity {
               return;
             }
             // Note: If hand_presence is false, these landmarks are useless.
-            Log.d(
-                TAG,
-                "[TS:"
-                    + packet.getTimestamp()
-                    + "] #Landmarks for hand: "
-                    + landmarks.getLandmarkCount());
+            Log.d(TAG, "[TS:" + packet.getTimestamp() + "] #Landmarks for hand: " + landmarks.getLandmarkCount());
             Log.d(TAG, getLandmarksDebugString(landmarks));
           } catch (InvalidProtocolBufferException e) {
             Log.e(TAG, "Couldn't Exception received - " + e);
@@ -204,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
           // SurfaceHolder.Callback added to (the holder of) previewDisplayView.
           previewDisplayView.setVisibility(View.VISIBLE);
         });
+//    updateFps();
     cameraHelper.startCamera(this, CAMERA_FACING, /*surfaceTexture=*/ null);
   }
 

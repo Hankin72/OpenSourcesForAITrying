@@ -2,19 +2,61 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/result_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="150dp"
+        android:text="Gesture TEST"
+        android:textColor="#fff"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/fps_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="15dp"
+        android:background="#55000000"
+        android:elevation="4dp"
+        android:padding="5dp"
+        android:textSize="25sp"
+        android:text="FPS: null"
+        android:textColor="#FFF"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/preview_display_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <FrameLayout
         android:id="@+id/preview_display_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1">
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
         <TextView
             android:id="@+id/no_camera_access_view"
-            android:layout_height="fill_parent"
             android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:gravity="center"
             android:text="@string/no_camera_access" />
+
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
