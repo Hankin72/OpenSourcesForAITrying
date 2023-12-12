@@ -39,10 +39,10 @@ dependencies {
     implementation 'com.google.protobuf:protobuf-lite:3.0.0'
 
     // MediaPipe Library
-    implementation 'com.google.mediapipe:solution-core:0.10.7'
-    implementation 'com.google.mediapipe:hands:0.10.7'
-    implementation 'com.google.mediapipe:solution-core:latest.release'
-    implementation 'com.google.mediapipe:hands:latest.release'
+//    implementation 'com.google.mediapipe:solution-core:0.10.7'
+//    implementation 'com.google.mediapipe:hands:0.10.7'
+//    implementation 'com.google.mediapipe:solution-core:latest.release'
+//    implementation 'com.google.mediapipe:hands:latest.release'
     // CameraX core library
     def camerax_version = "1.0.0-alpha06"
     implementation "androidx.camera:camera-core:$camerax_version"
